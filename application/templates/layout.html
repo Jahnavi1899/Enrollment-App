@@ -1,0 +1,64 @@
+<!--main html file-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>UTA - Home Page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/main.css') }}"/>
+</head>
+<body class="flex-wrapper">
+
+    <div class="container-fluid text-center top-container" >
+        <div style="float:left; padding-left:100px">
+            <img height="100px" width="100px" src="{{ url_for('static', filename='/images/Atom.png') }}">
+        </div>
+    <h1 style="color:white">Welcome to University</h1>
+    <div>
+        {% if session['username'] %}
+            <h3>Let's get started.</h3>
+        {% else%}
+            <p style="color:white">Already registered? <a href="{{url_for('login')}}" style="color:white">Login</a></p>
+        {% endif %}
+    </div>
+
+</div>
+    <div class="content-container">
+        <div class="row" style="height:100%">
+                <div class="col-2 side-bar">
+                {% include "includes/nav.html" %}
+            </div>
+
+
+            <div class="col-10">
+                {% if session['username'] %}
+                <div>
+                    <p class="user">Welcome, {{session['username']}}!</p>
+
+                </div>
+                {% endif %}
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">
+                                <p>{{ message }}</p>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <div>
+                    {% block content %}
+
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    {% include "includes/footer.html" %}
+
+</body>
+</html>
